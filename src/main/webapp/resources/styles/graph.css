@@ -1,0 +1,36 @@
+.graph-data {
+    display: flex;
+    /*justify-content: space-around;*/
+    /*padding: 4%;*/
+    width: 80%;
+}
+
+.graph-container {
+    margin: 30px;
+}
+
+.graph .area {
+    stroke: #615DEC;
+    fill: #76E2F4;
+}
+
+.graph line,
+.graph polygon,
+.graph text {
+    stroke: #301781;
+    fill: #301781;
+}
+
+.graph text {
+    font-size: 1em;
+}
+
+.graph .point[hit=true] {
+    fill: #615DEC;
+    stroke: #615DEC;
+}
+
+.graph .point[hit=false] {
+    fill: red;
+    stroke: red;
+}

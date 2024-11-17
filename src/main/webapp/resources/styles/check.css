@@ -1,0 +1,18 @@
+a.button {
+    color: #F4F4EC;
+    margin: 10px auto auto;
+    padding: 10px 20px;
+    border-radius: 5px;
+    letter-spacing: 1px;
+    display: flex;
+    text-decoration: none;
+    background-color: #615DEC;
+    border: 2px solid #301781;
+}
+
+a.button:hover {
+    color: #301781;
+    transition: 0.5s;
+    border: 2px solid #301781;
+    background-color: #F4F4EC;
+}
