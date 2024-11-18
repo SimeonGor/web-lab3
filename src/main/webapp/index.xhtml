@@ -61,7 +61,11 @@
                                        required="true"
                                        requiredMessage="required" converterMessage="value must be a number" />
                         <h:outputLabel id="r-output" value="#{areaChecker.r}" styleClass="labels"/>
-                        <p:slider for="r-input" display="r-output" minValue="2" maxValue="5" step="0.25" touchable="true" styleClass="slider" />
+                        <p:slider for="r-input" display="r-output"
+                                  minValue="2" maxValue="5" step="0.25"
+                                  touchable="true"
+                                  onSlide="handleSlider(event, ui)"
+                                  styleClass="slider" />
                         <h:message for="r-input" styleClass="labels" />
                     </div>
                 </div>

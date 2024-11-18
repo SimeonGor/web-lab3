@@ -4,12 +4,17 @@ if (!DEBUG) {
     console.log = () => {};
 }
 
+let rValue;
+function handleSlider(event, {value}) {
+    let customEvent = new Event("change", {value: value})
+    rValue.dispatchEvent(customEvent);
+}
+
 document.addEventListener("DOMContentLoaded", () => {
     let svg = document.querySelector("svg.graph");
     let area = new Area(svg);
     let radius;
-    let rValue = document.getElementById("coordinates-form:r-input");
-    console.log(rValue)
+    rValue = document.getElementById("coordinates-form:r-input");
     rValue.addEventListener("change", () => {
         area.setR(rValue.value);
         console.log(rValue.value);
