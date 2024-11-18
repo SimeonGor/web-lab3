@@ -1,0 +1,27 @@
+version: '3.3'
+
+services:
+  wildfly:
+    container_name: wildfly
+    hostname: localhost
+    image: quay.io/wildfly/wildfly:28.0.0.Final-jdk17
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./target/lab2-1.0-SNAPSHOT.war:/opt/jboss/wildfly/standalone/deployments/lab2.war
+
+  oracle:
+    image: gvenzl/oracle-xe:21-slim
+    container_name: oracledb
+    ports:
+      - 1521:1521
+    environment:
+      ORACLE_PASSWORD: root
+
+
+networks:
+  default:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.18.0.0/16

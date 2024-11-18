@@ -1,23 +1,40 @@
 package com.simeon.lab3.beans;
 
+import com.simeon.lab3.dto.AreaCheckRequest;
+import com.simeon.lab3.services.AreaCheckService;
 import jakarta.enterprise.context.RequestScoped;
+import jakarta.enterprise.inject.Any;
+import jakarta.inject.Inject;
 import jakarta.inject.Named;
 
 import java.math.BigDecimal;
 
 @RequestScoped
 @Named("areaChecker")
-public class AreaChecker {
+public class AreaCheckerController {
     private BigDecimal x;
     private BigDecimal y;
     private BigDecimal r;
 
-    public AreaChecker() {
+    private final AreaCheckService areaCheckerService;
 
+    @Inject
+    public AreaCheckerController(@Any AreaCheckService areaCheckService) {
+        this.areaCheckerService = areaCheckService;
     }
 
     public void checkArea() {
+        AreaCheckRequest request = new AreaCheckRequest(x, y, r);
 
+        areaCheckerService.handle(request);
+
+        clear();
+    }
+
+    private void clear() {
+        x = null;
+        y = null;
+        r = null;
     }
 
     public BigDecimal getY() {
