@@ -23,7 +23,7 @@ public class History implements Serializable {
     }
 
     public void addResult(CheckResult result) {
-        resultList.add(0, result);
+        resultList.addFirst(result);
     }
 
     @Override
