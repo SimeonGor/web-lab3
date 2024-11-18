@@ -5,7 +5,6 @@ import com.simeon.lab3.beans.History;
 import com.simeon.lab3.dto.AreaCheckRequest;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Any;
-import jakarta.enterprise.inject.Model;
 import jakarta.inject.Inject;
 
 import java.time.LocalDateTime;
