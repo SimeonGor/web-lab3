@@ -55,11 +55,11 @@
                 </div>
                 <div id="r-field" class="value-input">
                     <label class="labels">R:</label>
-                    <h:inputHidden id="r-input" value="#{areaChecker.r}"
-                                 readonly="true"
-                                 required="true"
-                                 requiredMessage="required" converterMessage="value must be a number" />
                     <div class="slider">
+                        <h:inputHidden id="r-input" value="#{areaChecker.r}"
+                                       readonly="true"
+                                       required="true"
+                                       requiredMessage="required" converterMessage="value must be a number" />
                         <h:outputLabel id="r-output" value="#{areaChecker.r}" styleClass="labels"/>
                         <p:slider for="r-input" display="r-output" minValue="2" maxValue="5" step="0.25" touchable="true" styleClass="slider" />
                         <h:message for="r-input" styleClass="labels" />
