@@ -15,7 +15,10 @@
     <ui:define name="content">
         <h:outputStylesheet library="styles" name="form.css" />
         <h:outputStylesheet library="styles" name="graph.css" />
+
         <h:outputScript library="scripts" name="validator.js" />
+        <h:outputScript library="scripts" name="area.js" />
+
         <div class="graph-data">
             <div class="graph-container">
                 <ui:include src="graph.xhtml">
@@ -52,13 +55,15 @@
                 </div>
                 <div id="r-field" class="value-input">
                     <label class="labels">R:</label>
-                    <h:inputText id="r-input" value="#{areaChecker.r}"
+                    <h:inputHidden id="r-input" value="#{areaChecker.r}"
                                  readonly="true"
                                  required="true"
-                                 requiredMessage="required" converterMessage="value must be a number"
-                                 styleClass="slider-value"/>
-                    <p:slider for="r-input" minValue="2" maxValue="5" step="0.25" touchable="true" styleClass="slider" />
-                    <h:message for="r-input" styleClass="labels" />
+                                 requiredMessage="required" converterMessage="value must be a number" />
+                    <div class="slider">
+                        <h:outputLabel id="r-output" value="#{areaChecker.r}" styleClass="labels"/>
+                        <p:slider for="r-input" display="r-output" minValue="2" maxValue="5" step="0.25" touchable="true" styleClass="slider" />
+                        <h:message for="r-input" styleClass="labels" />
+                    </div>
                 </div>
                 <h:commandButton styleClass="submit-button labels" action="#{areaChecker.checkArea}" value="Отправить" />
             </h:form>

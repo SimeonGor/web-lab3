@@ -38,7 +38,7 @@
 #coordinates-form .value-input {
     display: flex;
     flex-direction: row;
-    flex-wrap: nowrap;
+    align-items: stretch;
 }
 
 #coordinates-form input {
@@ -47,15 +47,5 @@
 }
 
 #coordinates-form .slider {
-    width: 100%;
-    align-self: center;
-}
-
-#coordinates-form .slider-value {
-    flex-wrap: wrap;
-}
-
-#coordinates-form .value-input {
-    display: flex;
-    flex-direction: column;
+    width: 100px;
 }

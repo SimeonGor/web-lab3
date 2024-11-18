@@ -1,6 +1,5 @@
 'use strict';
 
-const DEBUG = false;
 if (!DEBUG) {
     console.log = () => {};
 }
@@ -9,14 +8,12 @@ document.addEventListener("DOMContentLoaded", () => {
     let svg = document.querySelector("svg.graph");
     let area = new Area(svg);
     let radius;
-    let radioList = document.querySelectorAll("#coordinates-form input[type=radio][name=r]");
-    for (let radio of radioList) {
-        radio.addEventListener("change", () => {
-            area.setR(radio.value);
-            radius = radio.value;
-            console.log(radius);
-        });
-    }
+    let rValue = document.getElementById("coordinates-form:r-input");
+    console.log(rValue)
+    rValue.addEventListener("change", () => {
+        area.setR(rValue.value);
+        console.log(rValue.value);
+    });
 
     svg.addEventListener("click", (e) => {
         let point = area.getPoint(e);
