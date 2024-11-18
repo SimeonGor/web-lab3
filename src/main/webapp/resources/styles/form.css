@@ -1,10 +1,19 @@
 #coordinates-form {
     background-color: #76E2F4;
     border: 2px solid #301781;
-    display: inline-block;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
     width: 60%;
     padding: 20px;
     margin: auto auto auto 10%;
+}
+
+#coordinates-form .labels {
+    margin-right: 10px;
+    font-family: "fantasy", sans-serif;
+    font-size: 1em;
+    color: #301781;
 }
 
 #coordinates-form .submit-button {
@@ -25,16 +34,25 @@
     background-color: #F4F4EC;
 }
 
-#coordinates-form label {
-    margin-right: 10px;
-    font-family: "fantasy", sans-serif;
-    font-size: 1em;
-    color: #301781;
+
+#coordinates-form .value-input {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
 }
 
 #coordinates-form input {
     margin: 0.5%;
     background-color: #F4F4EC;
+}
+
+#coordinates-form .slider {
+    width: 100%;
+    align-self: center;
+}
+
+#coordinates-form .slider-value {
+    flex-wrap: wrap;
 }
 
 #coordinates-form .value-input {

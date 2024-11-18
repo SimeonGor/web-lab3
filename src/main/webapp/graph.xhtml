@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+<h:body>
+    <ui:composition>
+        <svg class="graph" height="${height}" width="${width}" xmlns="http://www.w3.org/2000/svg">
+            <!-- figure -->
+            <path class="area" transform="translate(${width / 2}, ${height/ 2}) scale(2, 2)"
+                  d="m -${width * 0.5 / 6} 0
+                  l 0 ${height / 6}
+                  l ${width * 0.5 / 6} 0
+                  l 0 -${height / 6}
+                  l ${width / 6} 0
+                  a ${width / 6} ${height / 6} 0 0 0 -${width / 6} -${height / 6}
+                  l -${width * 0.5 / 6} ${height / 6}
+                  Z" />
+            <!-- lines -->
+            <line x1="0" y1="${height / 2}" x2="${width}" y2="${height / 2}" />
+            <line x1="${width / 2}" y1="0" x2="${width / 2}" y2="${height}" />
+            <polygon points="${width / 2},0
+                             ${width / 2 - 4},10
+                             ${width/ 2 + 4},10"
+                     stroke="black" />
+            <polygon points="${width},${height / 2}
+                             ${width - 10},${height / 2 - 4}
+                             ${width - 10},${height / 2 + 4}"
+                     stroke="black" />
+
+            <text x="${width - 15}" y="${height / 2 - 10}">X</text>
+            <text x="${width / 2 + 10}" y="15">Y</text>
+
+            <!-- lines on lines -->
+            <ui:repeat var="label" value='${[["-R", "-2"], ["-R/2", "-1"], ["", ""], ["R/2", "1"], ["R", "2"]]}' varStatus="counter">
+                <line x1="${width * (counter.index + 1) / 6}" y1="${height / 2 - 4}" x2="${width * (counter.index + 1) / 6}" y2="${height / 2 + 4}" />
+                <text class="default" x="${width * (counter.index + 1) / 6 - 5}" y="${height / 2 - 10}"
+                      visibility="visible">
+                        ${label[0]}
+                </text>
+                <text class="scaled"
+                      x="${width * (counter.index + 1) / 6 - 5}" y="${height / 2 - 10}"
+                      visibility="hidden">
+                        ${label[1]}
+                </text>
+            </ui:repeat>
+            <ui:repeat var="label" value='${[["R", "2"], ["R/2", "1"], ["", ""], ["-R/2", "-1"], ["-R", "-2"]]}' varStatus="counter">
+                <line x1="${width / 2 - 4}" y1="${height * (counter.index + 1) / 6}" x2="${width / 2 + 4}" y2="${height * (counter.index + 1) / 6}" />
+                <text class="default" x="${width / 2 + 10}" y="${height * (counter.index + 1) / 6 + 4}"
+                      visibility="visible">
+                        ${label[0]}
+                </text>
+                <text class="scaled" x="${width / 2 + 10}" y="${height * (counter.index + 1) / 6 + 4}"
+                      visibility="hidden">
+                        ${label[1]}
+                </text>
+            </ui:repeat>
+
+            <ui:repeat var="entity" value="${history.resultList}">
+                <circle class="point scaled" r="5"
+                        cx="${(entity.x + 3) * width / 6}" cy="${(3 - entity.y) * height / 6}"
+                        hit="${entity.hit}"
+                        visibility="hidden" />
+            </ui:repeat>
+        </svg>
+</ui:composition>
+</h:body>
+</html>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+xmlns:h="http://xmlns.jcp.org/jsf/html"
+xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+xmlns:f="http://xmlns.jcp.org/jsf/core"
+xmlns:p="http://primefaces.org/ui">
+
+<h:body>
+    <ui:composition>
+        <h:outputStylesheet library="styles" name="table.css" />
+        <div class="table">
+            <!-- check table -->
+            <h:dataTable value="#{history.resultList}" var="row"
+                         styleClass="check-table"
+                         headerClass="check-table-header"
+                         rowClasses="check-table-rows">
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="X" />
+                    </f:facet>
+                    <h:outputText value="${row.x}">
+                        <f:convertNumber minFractionDigits="3" maxFractionDigits="3" />
+                    </h:outputText>
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="Y" />
+                    </f:facet>
+                    <h:outputText value="${row.y}">
+                        <f:convertNumber minFractionDigits="3" maxFractionDigits="3"/>
+                    </h:outputText>
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="R" />
+                    </f:facet>
+                    <h:outputText value="${row.r}">
+                        <f:convertNumber minFractionDigits="3" maxFractionDigits="3"/>
+                    </h:outputText>
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="Результат попадания" />
+                    </f:facet>
+                    <h:outputText value="${row.hit ? 'Попал' : 'Не попал'}" />
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="Время отправки" />
+                    </f:facet>
+                    <h:outputText value="${row.createdAt}">
+                        <f:convertDateTime value="${row.createdAt}" type="both" pattern="yyyy-MM-dd'T'HH:mm:ss"/>
+                    </h:outputText>
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="Время исполнения (мс)" />
+                    </f:facet>
+                    <h:outputText value="${row.workingTime}" />
+                </h:column>
+            </h:dataTable>
+        </div>
+    </ui:composition>
+</h:body>
+</html>

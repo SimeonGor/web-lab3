@@ -1,9 +1,14 @@
 'use strict';
 
+const DEBUG = false;
+if (!DEBUG) {
+    console.log = () => {};
+}
+
 document.addEventListener("DOMContentLoaded", main);
 
 function main() {
-    let yField = document.getElementById("y-input");
+    let yField = document.getElementById("coordinates-form:y-input");
     yField.onchange = validConstraint;
 }
 
@@ -18,8 +23,8 @@ function validConstraint(event) {
     } else if (!isFinite(value)) {
         field.setCustomValidity("Должно быть число!");
         return false;
-    } else if (value >= 5 || value <= -3) {
-        field.setCustomValidity("Вы вышли за диапазон (-3; 5)!");
+    } else if (value >= 3 || value <= -5) {
+        field.setCustomValidity("Вы вышли за диапазон (-5; 3)!");
         return false;
     } else {
         field.setCustomValidity("");

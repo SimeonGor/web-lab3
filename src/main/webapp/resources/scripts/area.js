@@ -1,7 +1,6 @@
 'use strict';
 
 const DEBUG = false;
-
 if (!DEBUG) {
     console.log = () => {};
 }
