@@ -1,11 +1,11 @@
 package com.simeon.lab3.dbcommunication;
 
+import com.simeon.lab3.exceptions.DBException;
 import com.simeon.lab3.qualifiers.HistoryBean;
 import com.simeon.lab3.qualifiers.HistoryType;
 import com.simeon.lab3.services.History;
 import com.simeon.lab3.dto.CheckResult;
 import com.simeon.lab3.exceptions.DBConnectException;
-import com.simeon.lab3.exceptions.DBWritingException;
 import jakarta.annotation.PreDestroy;
 import jakarta.enterprise.context.ApplicationScoped;
 
@@ -64,7 +64,7 @@ public class DatabaseHistory implements History {
 
     private void loadHistory() {
         try (Statement statement = connection.createStatement()) {
-            ResultSet resultSet = statement.executeQuery("SELECT (x, y, r, result, workingtime, createdAt) FROM history");
+            ResultSet resultSet = statement.executeQuery("SELECT x, y, r, result, workingtime, createdAt FROM history");
             while (resultSet.next()) {
                 history.add(new CheckResult(
                         resultSet.getBigDecimal("x"),
@@ -76,7 +76,7 @@ public class DatabaseHistory implements History {
                 ));
             }
         } catch (SQLException e) {
-            throw new DBWritingException();
+            throw new DBException("Failed to read from database");
         }
     }
 
@@ -101,7 +101,7 @@ public class DatabaseHistory implements History {
 
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            throw new DBWritingException();
+            throw new DBException("Error writing to the database");
         }
     }
 }
