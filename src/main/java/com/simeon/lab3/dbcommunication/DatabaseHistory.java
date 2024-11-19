@@ -6,6 +6,7 @@ import com.simeon.lab3.services.History;
 import com.simeon.lab3.dto.CheckResult;
 import com.simeon.lab3.exceptions.DBConnectException;
 import com.simeon.lab3.exceptions.DBWritingException;
+import jakarta.annotation.PreDestroy;
 import jakarta.enterprise.context.ApplicationScoped;
 
 import java.sql.*;
@@ -20,20 +21,20 @@ public class DatabaseHistory implements History {
 
     public DatabaseHistory() {
         String url = System.getenv("DB_URL");
-        String db_user = System.getenv("DB_USER");
-        String db_password = System.getenv("DB_PASSWORD");
+        String dbUser = System.getenv("DB_USER");
+        String dbPassword = System.getenv("DB_PASSWORD");
 
-        connection = connectToDatabase(url, db_user, db_password);
+        connection = connectToDatabase(url, dbUser, dbPassword);
 
         createTable();
         loadHistory();
     }
 
-    private Connection connectToDatabase(String url, String db_user, String db_password) {
+    private Connection connectToDatabase(String url, String dbUser, String dbPassword) {
         try {
-            return DriverManager.getConnection(url, db_user, db_password);
+            return DriverManager.getConnection(url, dbUser, dbPassword);
         } catch (SQLException e) {
-            throw new DBConnectException(e.getMessage());
+            throw new DBConnectException("Failed to connect to database %s".formatted(url));
         }
     }
 
@@ -52,10 +53,18 @@ public class DatabaseHistory implements History {
             throw new DBConnectException("Failed to create table");
         }
     }
+    @PreDestroy
+    private void closeConnection() {
+        try {
+            connection.close();
+        } catch (SQLException e) {
+            throw new DBConnectException("Failed to close connection");
+        }
+    }
 
     private void loadHistory() {
         try {
-            ResultSet resultSet = connection.createStatement().executeQuery("SELECT * FROM history");
+            ResultSet resultSet = connection.createStatement().executeQuery("SELECT (x, y, r, result, workingtime, createdAt) FROM history");
             while (resultSet.next()) {
                 history.add(new CheckResult(
                         resultSet.getBigDecimal("x"),

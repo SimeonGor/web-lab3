@@ -1,13 +1,10 @@
 package com.simeon.lab3.services;
 
-import com.simeon.lab3.dbcommunication.DatabaseHistory;
 import com.simeon.lab3.dto.CheckResult;
-import com.simeon.lab3.beans.SessionHistory;
 import com.simeon.lab3.dto.AreaCheckRequest;
 import com.simeon.lab3.qualifiers.HistoryBean;
 import com.simeon.lab3.qualifiers.HistoryType;
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.enterprise.inject.Any;
 import jakarta.inject.Inject;
 
 import java.time.LocalDateTime;
