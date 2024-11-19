@@ -39,27 +39,41 @@
             <text x="${width / 2 + 10}" y="15">Y</text>
 
             <!-- lines on lines -->
-            <ui:repeat var="label" value='${[["-R", "-2"], ["-R/2", "-1"], ["", ""], ["R/2", "1"], ["R", "2"]]}' varStatus="counter">
-                <line x1="${width * (counter.index + 1) / 6}" y1="${height / 2 - 4}" x2="${width * (counter.index + 1) / 6}" y2="${height / 2 + 4}" />
+            <ui:repeat var="label" value='${["-R", "-R/2", "", "R/2", "R"]}' varStatus="counter">
+                <line class="default" x1="${width * (counter.index + 1) / 6}" y1="${height / 2 - 4}"
+                      x2="${width * (counter.index + 1) / 6}" y2="${height / 2 + 4}"
+                      visibility="visible" />
                 <text class="default" x="${width * (counter.index + 1) / 6 - 5}" y="${height / 2 - 10}"
                       visibility="visible">
-                        ${label[0]}
-                </text>
-                <text class="scaled"
-                      x="${width * (counter.index + 1) / 6 - 5}" y="${height / 2 - 10}"
-                      visibility="hidden">
-                        ${label[1]}
+                        ${label}
                 </text>
             </ui:repeat>
-            <ui:repeat var="label" value='${[["R", "2"], ["R/2", "1"], ["", ""], ["-R/2", "-1"], ["-R", "-2"]]}' varStatus="counter">
-                <line x1="${width / 2 - 4}" y1="${height * (counter.index + 1) / 6}" x2="${width / 2 + 4}" y2="${height * (counter.index + 1) / 6}" />
+            <ui:repeat value="#{graph.XScale}" var="x" varStatus="counter">
+                <line class="scaled" x1="#{width * (counter.index + 1) / (graph.XScale.size() + 1)}" y1="${height / 2 - 4}"
+                      x2="#{width * (counter.index + 1) / (graph.XScale.size() + 1)}" y2="${height / 2 + 4}"
+                      visibility="hidden" />
+                <text class="scaled"
+                      x="#{width * (counter.index + 1) / (graph.XScale.size() + 1) - 5}" y="${height / 2 - 10}"
+                      visibility="hidden">
+                    ${x}
+                </text>
+            </ui:repeat>
+            <ui:repeat var="label" value='${["R", "R/2", "", "-R/2", "-R"]}' varStatus="counter">
+                <line class="default" x1="${width / 2 - 4}" y1="${height * (counter.index + 1) / 6}"
+                      x2="${width / 2 + 4}" y2="${height * (counter.index + 1) / 6}"
+                      visibility="visible" />
                 <text class="default" x="${width / 2 + 10}" y="${height * (counter.index + 1) / 6 + 4}"
                       visibility="visible">
-                        ${label[0]}
+                        ${label}
                 </text>
-                <text class="scaled" x="${width / 2 + 10}" y="${height * (counter.index + 1) / 6 + 4}"
+            </ui:repeat>
+            <ui:repeat value="#{graph.YScale}" var="y" varStatus="counter">
+                <line class="scaled" x1="${width / 2 - 4}" y1="#{height * (counter.index + 1) / (graph.YScale.size() + 1)}"
+                      x2="${width / 2 + 4}" y2="#{height * (counter.index + 1) / (graph.YScale.size() + 1)}"
+                      visibility="hidden" />
+                <text class="scaled" x="${width / 2 + 10}" y="#{height * (counter.index + 1) / (graph.YScale.size() + 1) + 4}"
                       visibility="hidden">
-                        ${label[1]}
+                    ${y}
                 </text>
             </ui:repeat>
 
