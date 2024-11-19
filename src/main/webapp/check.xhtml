@@ -51,7 +51,7 @@
                 </div>
                 <div id="y-field">
                     <label class="value-input labels">Y:
-                        <h:inputText id="y-input" value="#{areaChecker.y}" required="true"
+                        <h:inputText id="y-input" value="#{areaChecker.y}" autocomplete="off" required="true"
                                      requiredMessage="required" converterMessage="value must be a number"
                                      styleClass="labels" />
                         <h:message for="y-input" styleClass="labels" />
@@ -73,7 +73,7 @@
                         <h:message for="r-input" styleClass="labels" />
                     </div>
                 </div>
-                <h:commandButton styleClass="submit-button labels" action="#{areaChecker.checkArea}" value="Отправить" />
+                <h:commandButton id="submit-button" styleClass="submit-button labels" action="#{areaChecker.checkArea}" value="Отправить"/>
             </h:form>
 
             <h:form id="hidden-form">
