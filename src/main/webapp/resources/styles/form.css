@@ -49,3 +49,7 @@
 #coordinates-form .slider {
     width: 100px;
 }
+
+.hidden {
+    display: none;
+}

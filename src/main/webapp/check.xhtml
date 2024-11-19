@@ -75,6 +75,13 @@
                 </div>
                 <h:commandButton styleClass="submit-button labels" action="#{areaChecker.checkArea}" value="Отправить" />
             </h:form>
+
+            <h:form id="hidden-form">
+                <h:inputHidden id="hidden-x" value="#{areaChecker.x}" />
+                <h:inputHidden id="hidden-y" value="#{areaChecker.y}" />
+                <h:inputHidden id="hidden-r" value="#{areaChecker.r}" />
+                <h:commandButton id="hidden-button" styleClass="hidden" action="#{areaChecker.checkArea}" rendered="#{true}"/>
+            </h:form>
         </div>
 
         <ui:include src="table.xhtml" />

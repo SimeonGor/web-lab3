@@ -14,17 +14,23 @@ function handleSlider(event, ui) {
 document.addEventListener("DOMContentLoaded", () => {
     let svg = document.querySelector("svg.graph");
     let area = new Area(svg);
-    let radius;
     rValue = document.getElementById("coordinates-form:r-output");
     rValue.addEventListener("change", () => {
+        let hiddenR = document.getElementById("hidden-form:hidden-r");
+        hiddenR.value = rValue.value;
         area.setR(rValue.value);
         console.log(rValue.value);
     });
 
     svg.addEventListener("click", (e) => {
         let point = area.getPoint(e);
-        let url = document.querySelector("#coordinates-form").getAttribute("action");
-        window.location.href = `${url}?x=${point.x}&y=${point.y}&r=${radius}`;
+        let submitButton = document.getElementById("hidden-form:hidden-button");
+        let hiddenX = document.getElementById("hidden-form:hidden-x");
+        let hiddenY = document.getElementById("hidden-form:hidden-y");
+        hiddenX.value = point.x;
+        hiddenY.value = point.y;
+
+        submitButton.click();
     });
 });
 
@@ -55,7 +61,7 @@ class Area {
             }
         }
         let transform = this.#path.getAttribute("transform");
-        let new_transform = transform.replace(new RegExp(/scale(.*, .*)/), `scale(${r}, ${r})`);
+        let new_transform = transform.replace(new RegExp(/scale(.*, .*)/), `scale(${r/2}, ${r/2})`);
         this.#path.setAttribute("transform", new_transform);
     }
 
