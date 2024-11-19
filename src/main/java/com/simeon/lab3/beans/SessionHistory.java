@@ -1,5 +1,7 @@
 package com.simeon.lab3.beans;
 
+import com.simeon.lab3.History;
+import com.simeon.lab3.dto.CheckResult;
 import jakarta.enterprise.context.SessionScoped;
 import jakarta.inject.Named;
 
@@ -12,25 +14,27 @@ import java.util.Objects;
 
 @SessionScoped
 @Named(value = "history")
-public class History implements Serializable {
+public class SessionHistory implements Serializable, History {
     @Serial
     private static final long serialVersionUID = 4078483457730741479L;
 
     private final List<CheckResult> resultList = new LinkedList<>();
 
+    @Override
     public List<CheckResult> getResultList() {
         return resultList;
     }
 
+    @Override
     public void addResult(CheckResult result) {
-        resultList.addFirst(result);
+        resultList.add(0, result);
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        History history = (History) o;
+        SessionHistory history = (SessionHistory) o;
         return Objects.equals(resultList, history.resultList);
     }
 

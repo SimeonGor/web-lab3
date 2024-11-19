@@ -1,4 +1,4 @@
-package com.simeon.lab3.beans;
+package com.simeon.lab3.dto;
 
 import java.io.Serial;
 import java.io.Serializable;
