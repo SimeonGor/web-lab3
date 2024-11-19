@@ -39,8 +39,8 @@ public class DatabaseHistory implements History {
     }
 
     private void createTable() {
-        try {
-            connection.createStatement().executeUpdate(
+        try (Statement statement = connection.createStatement()) {
+            statement.executeUpdate(
                     "CREATE TABLE IF NOT EXISTS history (" +
                             "id SERIAL PRIMARY KEY, " +
                             "x DOUBLE PRECISION NOT NULL , " +
@@ -63,8 +63,8 @@ public class DatabaseHistory implements History {
     }
 
     private void loadHistory() {
-        try {
-            ResultSet resultSet = connection.createStatement().executeQuery("SELECT (x, y, r, result, workingtime, createdAt) FROM history");
+        try (Statement statement = connection.createStatement()) {
+            ResultSet resultSet = statement.executeQuery("SELECT (x, y, r, result, workingtime, createdAt) FROM history");
             while (resultSet.next()) {
                 history.add(new CheckResult(
                         resultSet.getBigDecimal("x"),
@@ -88,10 +88,9 @@ public class DatabaseHistory implements History {
     @Override
     public void addResult(CheckResult result) {
         history.add(result);
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement(
-                    "INSERT INTO history (x, y, r, createdAt, workingTime, result) " +
-                            "VALUES (?, ?, ?, ?, ?, ?)");
+        try (PreparedStatement preparedStatement = connection.prepareStatement(
+                "INSERT INTO history (x, y, r, createdAt, workingTime, result) " +
+                        "VALUES (?, ?, ?, ?, ?, ?)")) {
 
             preparedStatement.setBigDecimal(1, result.getX());
             preparedStatement.setBigDecimal(2, result.getY());
