@@ -79,7 +79,7 @@
 
             <ui:repeat var="entity" value="${history.resultList}">
                 <circle class="point scaled" r="5"
-                        cx="${(entity.x + 3) * width / 6}" cy="${(3 - entity.y) * height / 6}"
+                        cx="${(entity.x + (graph.XScale.size() + 1) / 2) * width / (graph.XScale.size() + 1)}" cy="${((graph.YScale.size() + 1) / 2 - entity.y) * height / (graph.YScale.size() + 1)}"
                         hit="${entity.hit}"
                         visibility="hidden" />
             </ui:repeat>

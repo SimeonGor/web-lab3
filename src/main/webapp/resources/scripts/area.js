@@ -76,8 +76,8 @@ class Area {
         point = point.matrixTransform(this.#element.getScreenCTM().inverse());
         let width = this.#element.getBoundingClientRect().width;
         let height = this.#element.getBoundingClientRect().height;
-        let x = point.x * 6 / width - 3;
-        let y = -(point.y * 6 / height - 3);
+        let x = point.x * 12 / width - 6;
+        let y = -(point.y * 12 / height - 6);
 
         return {x, y};
     }
