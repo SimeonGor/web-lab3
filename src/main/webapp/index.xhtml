@@ -13,10 +13,11 @@
 <h:body>
 <ui:composition template="/template/temlateLayout.xhtml">
     <ui:define name="content">
+        <h:outputStylesheet library="styles" name="index.css" />
         <h:outputScript library="scripts" name="time.js" />
-
-        <h:outputLabel id="clock" value="00:00:00.0000"/>
-
+        <div class="clock">
+            <h:outputLabel id="clock" value="00:00:00"/>
+        </div>
         <h:outputLink value="check.xhtml">
             <h:outputText value="Страница проверки"/>
         </h:outputLink>
