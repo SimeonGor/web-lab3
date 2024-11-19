@@ -52,7 +52,7 @@ class Area {
         if (!this.#isSettingRadius) {
             this.#isSettingRadius = true;
             for (let i of this.#element.children) {
-                if (i.matches(".default")) {
+                if (i.classList.contains("default")) {
                     i.setAttribute("visibility", "hidden");
                 }
                 if (i.classList.contains("scaled")) {

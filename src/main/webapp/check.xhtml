@@ -26,7 +26,6 @@
                     <ui:param name="height" value="300"/>
                     <ui:param name="width" value="300"/>
                 </ui:include>
-
             </div>
 
             <h:form id="coordinates-form">
@@ -84,8 +83,9 @@
                 <h:commandButton id="hidden-button" styleClass="hidden" action="#{areaChecker.checkArea}" rendered="#{true}"/>
             </h:form>
         </div>
-
-        <ui:include src="table.xhtml" />
+        <h:panelGroup id="result-table">
+            <ui:include src="table.xhtml" />
+        </h:panelGroup>
     </ui:define>
 </ui:composition>
 </h:body>
