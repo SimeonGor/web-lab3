@@ -17,9 +17,11 @@
         <h:outputStylesheet library="styles" name="header.css" />
         <div class="header">
             <div>
-                <h:outputLink value="index.xhtml">
-                    <h:graphicImage library="images" name="logo.png" />
-                </h:outputLink>
+                <h:form>
+                    <h:commandLink action="index">
+                        <h:graphicImage library="images" name="logo.png" />
+                    </h:commandLink>
+                </h:form>
             </div>
             <div class="student-details">
                 <span>Горюнов Семён P3230</span>
