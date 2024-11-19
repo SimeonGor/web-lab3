@@ -1,6 +1,8 @@
 package com.simeon.lab3.beans;
 
-import com.simeon.lab3.History;
+import com.simeon.lab3.qualifiers.HistoryBean;
+import com.simeon.lab3.qualifiers.HistoryType;
+import com.simeon.lab3.services.History;
 import com.simeon.lab3.dto.CheckResult;
 import jakarta.enterprise.context.SessionScoped;
 import jakarta.inject.Named;
@@ -14,6 +16,7 @@ import java.util.Objects;
 
 @SessionScoped
 @Named(value = "history")
+@HistoryBean(HistoryType.SESSION)
 public class SessionHistory implements Serializable, History {
     @Serial
     private static final long serialVersionUID = 4078483457730741479L;

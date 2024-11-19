@@ -1,10 +1,11 @@
 package com.simeon.lab3.services;
 
-import com.simeon.lab3.History;
 import com.simeon.lab3.dbcommunication.DatabaseHistory;
 import com.simeon.lab3.dto.CheckResult;
 import com.simeon.lab3.beans.SessionHistory;
 import com.simeon.lab3.dto.AreaCheckRequest;
+import com.simeon.lab3.qualifiers.HistoryBean;
+import com.simeon.lab3.qualifiers.HistoryType;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Any;
 import jakarta.inject.Inject;
@@ -17,8 +18,12 @@ public class AreaCheckServiceImpl implements AreaCheckService {
     private History databaseHistory;
 
     @Inject
-    public void setHistory(@Any SessionHistory sessionHistory, DatabaseHistory databaseHistory) {
+    public void setSessionHistory(@HistoryBean(HistoryType.SESSION)History sessionHistory) {
         this.sessionHistory = sessionHistory;
+    }
+
+    @Inject
+    public void setDatabaseHistory(@HistoryBean(HistoryType.DATABASE) History databaseHistory) {
         this.databaseHistory = databaseHistory;
     }
 

@@ -14,20 +14,6 @@ services:
     depends_on:
       - postgres
 
-  oracle:
-    image: daggerok/oracle:se
-    hostname: oracledb
-    container_name: oracledb
-    environment:
-      ORACLE_SID: xe
-      ORACLE_PWD: password
-    ports:
-      - "1521:1521"
-      - "5500:5500"
-    volumes:
-      - "./oracle-volume:/opt/oracle/oradata"
-    restart: unless-stopped
-
   postgres:
     image: postgres:latest
     hostname: postgres

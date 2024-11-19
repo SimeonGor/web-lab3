@@ -1,18 +1,19 @@
 package com.simeon.lab3.dbcommunication;
 
-import com.simeon.lab3.History;
+import com.simeon.lab3.qualifiers.HistoryBean;
+import com.simeon.lab3.qualifiers.HistoryType;
+import com.simeon.lab3.services.History;
 import com.simeon.lab3.dto.CheckResult;
 import com.simeon.lab3.exceptions.DBConnectException;
 import com.simeon.lab3.exceptions.DBWritingException;
 import jakarta.enterprise.context.ApplicationScoped;
 
-import java.math.BigDecimal;
 import java.sql.*;
-import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 
 @ApplicationScoped
+@HistoryBean(HistoryType.DATABASE)
 public class DatabaseHistory implements History {
     private final Connection connection;
     private final List<CheckResult> history = new LinkedList<>();
