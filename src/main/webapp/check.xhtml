@@ -8,17 +8,19 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
 
-<h:head>
-    <title>Hello World</title>
-</h:head>
 <h:body>
 <ui:composition template="/template/temlateLayout.xhtml">
-    <ui:define name="content">
+    <ui:define name="title">
+        <title>Area Checker</title>
+    </ui:define>
+    <ui:define name="css">
         <h:outputStylesheet library="styles" name="form.css" />
         <h:outputStylesheet library="styles" name="graph.css" />
-
-        <h:outputScript library="scripts" name="validator.js" />
+    </ui:define>
+    <ui:define name="js">
         <h:outputScript library="scripts" name="area.js" />
+    </ui:define>
+    <ui:define name="content">
 
         <div class="graph-data">
             <div class="graph-container">
@@ -30,7 +32,7 @@
 
             <h:form id="coordinates-form">
                 <div id="x-field">
-                    <label class="value-input labels">
+                    <label class="value-input labels" for="x-input">
                         X:
                         <h:selectOneMenu id="x-input" value="#{areaChecker.x}" required="true"
                                          styleClass="labels"
@@ -50,15 +52,16 @@
                     </label>
                 </div>
                 <div id="y-field">
-                    <label class="value-input labels">Y:
+                    <label class="value-input labels" for="y-input">Y:
                         <h:inputText id="y-input" value="#{areaChecker.y}" autocomplete="off" required="true"
                                      requiredMessage="required" converterMessage="value must be a number"
+                                     validatorMessage="value must be in range [-5;3]"
                                      styleClass="labels" />
                         <h:message for="y-input" styleClass="labels" />
                     </label>
                 </div>
                 <div id="r-field" class="value-input">
-                    <label class="labels">R:
+                    <label class="labels" for="r-input">R:
                         <h:inputHidden id="r-input" value="#{areaChecker.r}"
                                        required="true"
                                        requiredMessage="required" converterMessage="value must be a number" />

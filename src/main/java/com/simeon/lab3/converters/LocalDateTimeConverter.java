@@ -8,7 +8,7 @@ import jakarta.faces.convert.FacesConverter;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-@FacesConverter("localDateTimeConverter")
+@FacesConverter("com.simeon.localDateTimeConverter")
 public class LocalDateTimeConverter implements Converter<LocalDateTime> {
     private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-dd-MM HH:mm:ss");
     @Override

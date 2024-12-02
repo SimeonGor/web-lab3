@@ -9,8 +9,9 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 
 <h:head>
-    <title>Template</title>
+    <ui:insert name="title" ><title>Template</title></ui:insert>
     <h:outputStylesheet library="styles" name="main.css" />
+    <ui:insert name="css" />
 </h:head>
 
 <h:body>
@@ -34,5 +35,6 @@
         </div>
     </div>
 </h:body>
+<ui:insert name="js" />
 
 </html>

@@ -5,6 +5,11 @@
               xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
               http://java.sun.com/xml/ns/javaee/web-facesconfig_1_2.xsd"
               version="1.2">
+    <converter>
+        <converter-for-class>java.time.LocalDateTime</converter-for-class>
+        <converter-class>com.simeon.lab3.converters.LocalDateTimeConverter</converter-class>
+    </converter>
+
     <navigation-rule>
         <from-view-id>/index.xhtml</from-view-id>
         <navigation-case>
