@@ -56,7 +56,9 @@
                         <h:inputText id="y-input" value="#{areaChecker.y}" autocomplete="off" required="true"
                                      requiredMessage="required" converterMessage="value must be a number"
                                      validatorMessage="value must be in range [-5;3]"
-                                     styleClass="labels" />
+                                     styleClass="labels">
+                            <f:validateDoubleRange minimum="-5" maximum="3" />
+                        </h:inputText>
                         <h:message for="y-input" styleClass="labels" />
                     </label>
                 </div>
@@ -80,9 +82,15 @@
             </h:form>
 
             <h:form id="hidden-form">
-                <h:inputHidden id="hidden-x" value="#{areaChecker.x}" />
-                <h:inputHidden id="hidden-y" value="#{areaChecker.y}" />
-                <h:inputHidden id="hidden-r" value="#{areaChecker.r}" />
+                <h:inputHidden id="hidden-x" value="#{areaChecker.x}">
+                    <f:validateDoubleRange minimum="-6" maximum="6" />
+                </h:inputHidden>
+                <h:inputHidden id="hidden-y" value="#{areaChecker.y}">
+                    <f:validateDoubleRange minimum="-6" maximum="6" />
+                </h:inputHidden>
+                <h:inputHidden id="hidden-r" value="#{areaChecker.r}">
+                    <f:validateDoubleRange minimum="2" maximum="5" />
+                </h:inputHidden>
                 <h:commandButton id="hidden-button" styleClass="hidden" action="#{areaChecker.checkArea}" rendered="#{true}"/>
             </h:form>
         </div>
