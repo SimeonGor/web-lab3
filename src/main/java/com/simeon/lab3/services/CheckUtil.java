@@ -15,18 +15,18 @@ public class CheckUtil {
     }
 
     private static boolean checkFirstQuarter(BigDecimal x, BigDecimal y, BigDecimal r) {
-        if (x.compareTo(BigDecimal.ZERO) < 0 || y.compareTo(BigDecimal.ZERO) < 0) return false;
+        if (x.compareTo(new BigDecimal("0")) < 0 || y.compareTo(new BigDecimal("0")) < 0) return false;
         return (x.pow(2).add(y.pow(2)).compareTo(r.pow(2))) <= 0;
     }
 
     private static boolean checkSecondQuarter(BigDecimal x, BigDecimal y, BigDecimal r) {
-        if (x.compareTo(BigDecimal.ZERO) > 0 || y.compareTo(BigDecimal.ZERO) < 0) return false;
-        return x.multiply(BigDecimal.valueOf(2)).add(r).compareTo(y) <= 0;
+        if (x.compareTo(new BigDecimal("0")) > 0 || y.compareTo(new BigDecimal("0")) < 0) return false;
+        return x.multiply(BigDecimal.valueOf(2)).add(r).compareTo(y) >= 0;
 
     }
 
     private static boolean checkThirdQuarter(BigDecimal x, BigDecimal y, BigDecimal r) {
         if (x.compareTo(new BigDecimal("0")) > 0 || y.compareTo(new BigDecimal("0")) > 0) return false;
-        return y.add(x).compareTo(r.negate()) >= 0 && x.compareTo(r.negate().divide(BigDecimal.valueOf(2), RoundingMode.UNNECESSARY)) <= 0;
+        return y.compareTo(r.negate()) >= 0 && x.compareTo(r.negate().divide(BigDecimal.valueOf(2),RoundingMode.HALF_UP)) >= 0;
     }
 }
