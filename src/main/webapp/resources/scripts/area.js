@@ -61,6 +61,16 @@ class Area {
                 }
             }
         }
+        for (let i of this.#element.children) {
+            if (i.classList.contains("point")) {
+                if (i.getAttribute("hit_radius") === r) {
+                    i.setAttribute("visibility", "visible");
+                }
+                else {
+                    i.setAttribute("visibility", "hidden");
+                }
+            }
+        }
         let transform = this.#path.getAttribute("transform");
         let new_transform = transform.replace(new RegExp(/scale(.*, .*)/), `scale(${r/2}, ${r/2})`);
         this.#path.setAttribute("transform", new_transform);
