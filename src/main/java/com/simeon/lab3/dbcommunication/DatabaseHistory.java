@@ -6,6 +6,7 @@ import com.simeon.lab3.qualifiers.HistoryType;
 import com.simeon.lab3.services.History;
 import com.simeon.lab3.dto.CheckResult;
 import com.simeon.lab3.exceptions.DBConnectException;
+import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 import jakarta.enterprise.context.ApplicationScoped;
 
@@ -16,18 +17,33 @@ import java.util.List;
 @ApplicationScoped
 @HistoryBean(HistoryType.DATABASE)
 public class DatabaseHistory implements History {
-    private final Connection connection;
+    private Connection connection;
     private final List<CheckResult> history = new LinkedList<>();
+    private final String url;
+    private final String dbUser;
+    private final String dbPassword;
 
     public DatabaseHistory() {
-        String url = System.getenv("DB_URL");
-        String dbUser = System.getenv("DB_USER");
-        String dbPassword = System.getenv("DB_PASSWORD");
+        url = System.getenv("DB_URL");
+        dbUser = System.getenv("DB_USER");
+        dbPassword = System.getenv("DB_PASSWORD");
+    }
 
+    @PostConstruct
+    public void initDataBase() {
         connection = connectToDatabase(url, dbUser, dbPassword);
 
         createTable();
         loadHistory();
+    }
+
+    @PreDestroy
+    private void closeConnection() {
+        try {
+            connection.close();
+        } catch (SQLException e) {
+            throw new DBConnectException("Failed to close connection");
+        }
     }
 
     private Connection connectToDatabase(String url, String dbUser, String dbPassword) {
@@ -51,14 +67,6 @@ public class DatabaseHistory implements History {
                             "result BOOLEAN NOT NULL )");
         } catch (SQLException e) {
             throw new DBConnectException("Failed to create table");
-        }
-    }
-    @PreDestroy
-    private void closeConnection() {
-        try {
-            connection.close();
-        } catch (SQLException e) {
-            throw new DBConnectException("Failed to close connection");
         }
     }
 

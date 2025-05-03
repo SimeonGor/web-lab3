@@ -23,12 +23,14 @@ public class AreaCheckerController {
         this.areaCheckerService = areaCheckService;
     }
 
-    public void checkArea() {
+    public String checkArea() {
         AreaCheckRequest request = new AreaCheckRequest(x, y, r);
 
         areaCheckerService.handle(request);
 
         clear();
+
+        return "check";
     }
 
     private void clear() {
