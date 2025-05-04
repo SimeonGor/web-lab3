@@ -1,5 +1,4 @@
 target/
-build/
 pgdata/
 lib/
 wildfly-36.0.0.Final/

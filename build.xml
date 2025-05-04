@@ -142,7 +142,7 @@
         <echo message="------ NATIVE2ASCII SUCCESS ------"/>
     </target>
 
-    <target name="env" description="builds and runs the program in alternative environments; the environment is set by the java version and a set of virtual machine arguments in the parameters file.">
+    <target name="env" description="Builds and runs the program in alternative environments; the environment is set by the java version and a set of virtual machine arguments in the parameters file.">
         <echo message="------ ENV ------" />
 
         <mkdir dir="${build.classes}" />
@@ -164,7 +164,7 @@
         <echo message="------ ENV SUCCESS ------" />
     </target>
 
-    <target name="deploy" depends="build" description="deploy project to wildfly">
+    <target name="deploy" depends="build" description="Deploy project to wildfly">
         <echo message="------ DEPLOY ------" />
 
         <fail message="WILDFLY_HOME environment variable must be set" unless="env.WILDFLY_HOME"/>
