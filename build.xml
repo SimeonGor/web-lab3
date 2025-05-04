@@ -1,0 +1,189 @@
+<?xml version="1.0"?>
+<project name="lab3" default="build" xmlns:ivy="antlib:org.apache.ivy.ant">
+    <property file="build.properties"/>
+
+    <property name="artifactid" value="${ant.project.name}-${project.version}" />
+
+    <path id="classpath">
+        <fileset dir="${lib.dir}" includes="*.jar"/>
+        <fileset dir="${src.main}" includes="*.java"/>
+    </path>
+
+    <path id="classpath.test">
+        <pathelement location="${junit.jupiter.api}"/>
+        <pathelement location="${junit.jupiter.engine}"/>
+        <pathelement location="${build.classes}"/>
+    </path>
+
+    <target name="download-ivy" unless="offline">
+        <mkdir dir="${ivy.jar.dir}"/>
+        <get src="https://repo1.maven.org/maven2/org/apache/ivy/ivy/${ivy.install.version}/ivy-${ivy.install.version}.jar"
+             dest="${ivy.jar.file}" usetimestamp="true"/>
+    </target>
+
+    <target name="init-ivy" depends="download-ivy">
+        <path id="ivy.lib.path">
+            <fileset dir="${ivy.jar.dir}" includes="*.jar"/>
+        </path>
+        <taskdef resource="org/apache/ivy/ant/antlib.xml" uri="antlib:org.apache.ivy.ant" classpathref="ivy.lib.path"/>
+    </target>
+
+    <target name="resolve" depends="init-ivy" description="Resolve dependencies with Ivy">
+        <ivy:settings/>
+        <ivy:resolve file="ivy.xml" conf="compile"/>
+        <ivy:retrieve pattern="${lib.dir}/[artifact]-[revision].[ext]" conf="compile"/>
+        <ivy:resolve file="ivy.xml" conf="classifier"/>
+        <ivy:retrieve pattern="${lib.dir}/[artifact]-[revision][classifier].[ext]" conf="classifier"/>
+    </target>
+
+    <target name="compile" depends="resolve" description="Compile source code">
+        <echo message="------ COMPILE ------" />
+
+        <mkdir dir="${build.classes}" />
+        <javac srcdir="${src.main}"
+               destdir="${build.classes}"
+               source="${java.compiler.version.source}"
+               target="${java.compiler.version.target}"
+               includeantruntime="false">
+            <classpath refid="classpath"/>
+        </javac>
+
+        <copy todir="${build.classes}">
+            <fileset dir="${resources.dir}"/>
+        </copy>
+
+        <echo message="------ COMPILE SUCCESS ------" />
+    </target>
+
+    <target name="test-compile" depends="compile" description="Compile test source code">
+        <echo message="------ TEST COMPILE ------" />
+
+        <mkdir dir="${build.test.classes}" />
+        <javac srcdir="${src.test}"
+               destdir="${build.test.classes}"
+               source="${java.compiler.version.source}"
+               target="${java.compiler.version.target}"
+               includeantruntime="false">
+            <classpath refid="classpath"/>
+            <classpath refid="classpath.test"/>
+        </javac>
+
+        <echo message="------ TEST COMPILE SUCCESS ------" />
+    </target>
+
+    <target name="clean" description="Clean build artifacts">
+        <echo message="------ CLEAN ------" />
+
+        <delete includeemptydirs="true">
+            <fileset dir="${build.dir}" includes="**/*" />
+        </delete>
+
+        <echo message="------ CLEAN SUCCESS ------" />
+    </target>
+
+    <target name="delete-libs" description="Delete libs">
+        <echo message="------ DELETE LIBS ------" />
+
+        <delete includeemptydirs="true">
+            <fileset dir="${lib.dir}" includes="**/*" />
+        </delete>
+
+        <echo message="------ DELETE LIBS SUCCESS ------" />
+    </target>
+
+    <target name="build" depends="compile" description="Build project">
+        <echo message="------ BUILD ------"/>
+
+        <mkdir dir="${build.dir}/${artifactid}"/>
+
+        <copy todir="${build.dir}/${artifactid}">
+            <fileset dir="${webapp.dir}"/>
+        </copy>
+
+        <copy todir="${build.dir}/${artifactid}/WEB-INF/lib">
+            <fileset dir="${lib.dir}"/>
+        </copy>
+
+        <copy todir="${build.dir}/${artifactid}/WEB-INF/classes">
+            <fileset dir="${build.classes}"/>
+        </copy>
+
+        <jar destfile="${build.dir}/${artifactid}.jar">
+            <fileset dir="${build.dir}/${artifactid}"/>
+            <manifest>
+                <attribute name="Created-By" value="Apache Ant"/>
+                <attribute name="Manifest-Version" value="1.0"/>
+            </manifest>
+        </jar>
+
+        <war destfile="${build.dir}/${artifactid}.war" webxml="${build.dir}/${artifactid}/WEB-INF/web.xml">
+            <fileset dir="${build.dir}/${artifactid}"/>
+            <manifest>
+                <attribute name="Created-By" value="Apache Ant"/>
+                <attribute name="Manifest-Version" value="1.0"/>
+            </manifest>
+        </war>
+
+        <echo message="------ BUILD SUCCESS ------"/>
+    </target>
+
+    <target name="native2ascii" description="native2ascii conversion for localization file copies">
+        <echo message="------ NATIVE2ASCII ------"/>
+
+        <mkdir dir="${build.classes}" />
+
+        <delete includeemptydirs="true">
+            <fileset dir="${build.classes}" includes="**/*.properties" />
+        </delete>
+
+        <native2ascii encoding="UTF-8"
+                      src="${resources.dir}"
+                      dest="${build.classes}"
+                      includes="**/*.properties"/>
+
+        <echo message="------ NATIVE2ASCII SUCCESS ------"/>
+    </target>
+
+    <target name="env" description="builds and runs the program in alternative environments; the environment is set by the java version and a set of virtual machine arguments in the parameters file.">
+        <echo message="------ ENV ------" />
+
+        <mkdir dir="${build.classes}" />
+        <javac srcdir="${src.main}"
+               destdir="${build.classes}"
+               source="${java.compiler.version.source}"
+               target="${java.compiler.version.target}"
+               includeantruntime="false">
+            <classpath refid="classpath"/>
+            <compilerarg line="${jvm.args}"/>
+        </javac>
+
+        <copy todir="${build.classes}">
+            <fileset dir="${resources.dir}"/>
+        </copy>
+
+        <antcall target="build"/>
+
+        <echo message="------ ENV SUCCESS ------" />
+    </target>
+
+    <target name="deploy" depends="build" description="deploy project to wildfly">
+        <echo message="------ DEPLOY ------" />
+
+        <fail message="WILDFLY_HOME environment variable must be set" unless="env.WILDFLY_HOME"/>
+        <fail message="WildFly deployments directory ${wildfly.deployments} does not exist">
+            <condition>
+                <not><available file="${wildfly.deployments}" type="dir"/></not>
+            </condition>
+        </fail>
+
+        <delete includeemptydirs="true" quiet="true">
+            <fileset dir="${wildfly.deployments}" includes="${artifactid}.war"/>
+        </delete>
+
+        <copy file="${build.dir}/${artifactid}.war" todir="${wildfly.deployments}"/>
+        <echo message="Deployed ${build.dir}/${artifactid}.war to ${wildfly.deployments}"/>
+
+        <echo message="------ DEPLOY SUCCESS ------" />
+    </target>
+
+</project>
