@@ -1,5 +1,7 @@
 <?xml version="1.0"?>
 <project name="lab3" default="build" xmlns:ivy="antlib:org.apache.ivy.ant">
+    <property environment="env" />
+
     <property file="build.properties"/>
 
     <property name="artifactid" value="${ant.project.name}-${project.version}" />
@@ -42,8 +44,6 @@
         <mkdir dir="${build.classes}" />
         <javac srcdir="${src.main}"
                destdir="${build.classes}"
-               source="${java.compiler.version.source}"
-               target="${java.compiler.version.target}"
                includeantruntime="false">
             <classpath refid="classpath"/>
         </javac>
@@ -61,8 +61,6 @@
         <mkdir dir="${build.test.classes}" />
         <javac srcdir="${src.test}"
                destdir="${build.test.classes}"
-               source="${java.compiler.version.source}"
-               target="${java.compiler.version.target}"
                includeantruntime="false">
             <classpath refid="classpath"/>
             <classpath refid="classpath.test"/>

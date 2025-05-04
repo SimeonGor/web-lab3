@@ -2,6 +2,7 @@ target/
 build/
 pgdata/
 lib/
+wildfly-36.0.0.Final/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
