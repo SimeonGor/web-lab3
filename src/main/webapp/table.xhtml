@@ -50,21 +50,21 @@
 
                 <h:column>
                     <f:facet name="header">
-                        <h:outputText value="Результат попадания" />
+                        <h:outputText value="#{msgs.hit_result}" />
                     </f:facet>
-                    <h:outputText value="${row.hit ? 'Попал' : 'Не попал'}" />
+                    <h:outputText value="${row.hit ? msgs.hit_true : msgs.hit_false}" />
                 </h:column>
 
                 <h:column>
                     <f:facet name="header">
-                        <h:outputText value="Время отправки" />
+                        <h:outputText value="#{msgs.created_at}" />
                     </f:facet>
                     <h:outputText value="${row.createdAt}" />
                 </h:column>
 
                 <h:column>
                     <f:facet name="header">
-                        <h:outputText value="Время исполнения (мс)" />
+                        <h:outputText value="#{msgs.working_time}" />
                     </f:facet>
                     <h:outputText value="${row.workingTime}" />
                 </h:column>
