@@ -6,7 +6,7 @@ services:
     ports:
       - "8080:8080"
     volumes:
-      - ./target/lab3-1.0-SNAPSHOT.war:/opt/jboss/wildfly/standalone/deployments/lab3.war
+      - ./build/lab3-1.0-SNAPSHOT.war:/opt/jboss/wildfly/standalone/deployments/lab3.war
     environment:
       DB_URL: "jdbc:postgresql://postgres:5432/postgres_db"
       DB_USER: "dbuser"
