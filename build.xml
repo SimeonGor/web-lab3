@@ -11,10 +11,15 @@
         <fileset dir="${src.main}" includes="*.java"/>
     </path>
 
-    <target name="download-ivy" unless="offline">
+    <path id="test.classpath">
+        <path refid="classpath" />
+        <fileset dir="${lib.dir}/test" includes="*.jar" />
+    </path>
+
+    <target name="download-ivy" unless="offline" >
         <mkdir dir="${ivy.jar.dir}"/>
         <get src="https://repo1.maven.org/maven2/org/apache/ivy/ivy/${ivy.install.version}/ivy-${ivy.install.version}.jar"
-             dest="${ivy.jar.file}" usetimestamp="true"/>
+             dest="${ivy.jar.file}" usetimestamp="true" />
     </target>
 
     <target name="init-ivy" depends="download-ivy">
@@ -26,9 +31,9 @@
 
     <target name="resolve" depends="init-ivy" description="Resolve dependencies with Ivy">
         <ivy:settings/>
-        <ivy:resolve file="ivy.xml" conf="compile, test"/>
-        <ivy:retrieve pattern="${lib.dir}/[artifact]-[revision].[ext]" conf="compile, test"/>
-        <ivy:resolve file="ivy.xml" conf="classifier"/>
+        <ivy:resolve file="ivy.xml" conf="compile, test, classifier"/>
+        <ivy:retrieve pattern="${lib.dir}/[artifact]-[revision].[ext]" conf="compile"/>
+        <ivy:retrieve pattern="${lib.dir}/test/[artifact]-[revision].[ext]" conf="test"/>
         <ivy:retrieve pattern="${lib.dir}/[artifact]-[revision][classifier].[ext]" conf="classifier"/>
     </target>
 
@@ -56,7 +61,7 @@
         <javac srcdir="${src.test}"
                destdir="${build.test.classes}"
                includeantruntime="false">
-            <classpath refid="classpath"/>
+            <classpath refid="test.classpath"/>
         </javac>
 
         <echo message="------ TEST COMPILE SUCCESS ------" />
@@ -66,7 +71,7 @@
         <mkdir dir="${junit.report}"/>
         <junitlauncher printsummary="yes" haltonfailure="yes">
             <classpath>
-                <path refid="classpath" />
+                <path refid="test.classpath" />
                 <pathelement location="${build.test.classes}"/>
             </classpath>
             <testclasses outputdir="${junit.report}">
@@ -107,7 +112,7 @@
         </copy>
 
         <copy todir="${build.dir}/${artifactid}/WEB-INF/lib">
-            <fileset dir="${lib.dir}"/>
+            <fileset dir="${lib.dir}" excludes="test/**"/>
         </copy>
 
         <copy todir="${build.dir}/${artifactid}/WEB-INF/classes">
@@ -163,11 +168,21 @@
             <compilerarg line="${jvm.args}"/>
         </javac>
 
+        <mkdir dir="${build.test.classes}" />
+        <javac srcdir="${src.test}"
+               destdir="${build.test.classes}"
+               source="${java.compiler.version.source}"
+               target="${java.compiler.version.target}"
+               includeantruntime="false">
+            <classpath refid="test.classpath"/>
+            <compilerarg line="${jvm.args}"/>
+        </javac>
+
         <copy todir="${build.classes}">
             <fileset dir="${resources.dir}"/>
         </copy>
 
-        <antcall target="build"/>
+        <antcall target="build" />
 
         <echo message="------ ENV SUCCESS ------" />
     </target>
