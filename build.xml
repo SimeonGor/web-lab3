@@ -14,6 +14,7 @@
     <path id="test.classpath">
         <path refid="classpath" />
         <fileset dir="${lib.dir}/test" includes="*.jar" />
+        <pathelement location="${build.classes}"/>
     </path>
 
     <target name="download-ivy" unless="offline" >
@@ -68,6 +69,8 @@
     </target>
 
     <target name="test" depends="test-compile" description="Run tests">
+        <echo message="------ TEST ------" />
+
         <mkdir dir="${junit.report}"/>
         <junitlauncher printsummary="yes" haltonfailure="yes">
             <classpath>
@@ -77,9 +80,11 @@
             <testclasses outputdir="${junit.report}">
                 <fileset dir="${build.test.classes}" includes="**/*Test.class" />
                 <listener type="legacy-xml" sendSysOut="true" sendSysErr="true"/>
-                <listener type="legacy-plain" sendSysOut="true"/>
+                <listener type="legacy-plain"/>
             </testclasses>
         </junitlauncher>
+
+        <echo message="------ TEST SUCCESS ------" />
     </target>
 
     <target name="clean" description="Clean build artifacts">
