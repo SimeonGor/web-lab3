@@ -11,12 +11,6 @@
         <fileset dir="${src.main}" includes="*.java"/>
     </path>
 
-    <path id="classpath.test">
-        <pathelement location="${junit.jupiter.api}"/>
-        <pathelement location="${junit.jupiter.engine}"/>
-        <pathelement location="${build.classes}"/>
-    </path>
-
     <target name="download-ivy" unless="offline">
         <mkdir dir="${ivy.jar.dir}"/>
         <get src="https://repo1.maven.org/maven2/org/apache/ivy/ivy/${ivy.install.version}/ivy-${ivy.install.version}.jar"
@@ -32,8 +26,8 @@
 
     <target name="resolve" depends="init-ivy" description="Resolve dependencies with Ivy">
         <ivy:settings/>
-        <ivy:resolve file="ivy.xml" conf="compile"/>
-        <ivy:retrieve pattern="${lib.dir}/[artifact]-[revision].[ext]" conf="compile"/>
+        <ivy:resolve file="ivy.xml" conf="compile, test"/>
+        <ivy:retrieve pattern="${lib.dir}/[artifact]-[revision].[ext]" conf="compile, test"/>
         <ivy:resolve file="ivy.xml" conf="classifier"/>
         <ivy:retrieve pattern="${lib.dir}/[artifact]-[revision][classifier].[ext]" conf="classifier"/>
     </target>
@@ -63,10 +57,24 @@
                destdir="${build.test.classes}"
                includeantruntime="false">
             <classpath refid="classpath"/>
-            <classpath refid="classpath.test"/>
         </javac>
 
         <echo message="------ TEST COMPILE SUCCESS ------" />
+    </target>
+
+    <target name="test" depends="test-compile" description="Run tests">
+        <mkdir dir="${junit.report}"/>
+        <junitlauncher printsummary="yes" haltonfailure="yes">
+            <classpath>
+                <path refid="classpath" />
+                <pathelement location="${build.test.classes}"/>
+            </classpath>
+            <testclasses outputdir="${junit.report}">
+                <fileset dir="${build.test.classes}" includes="**/*Test.class" />
+                <listener type="legacy-xml" sendSysOut="true" sendSysErr="true"/>
+                <listener type="legacy-plain" sendSysOut="true"/>
+            </testclasses>
+        </junitlauncher>
     </target>
 
     <target name="clean" description="Clean build artifacts">
@@ -89,7 +97,7 @@
         <echo message="------ DELETE LIBS SUCCESS ------" />
     </target>
 
-    <target name="build" depends="compile" description="Build project">
+    <target name="build" depends="test" description="Build project">
         <echo message="------ BUILD ------"/>
 
         <mkdir dir="${build.dir}/${artifactid}"/>
