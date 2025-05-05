@@ -63,7 +63,8 @@ class Area {
         }
         for (let i of this.#element.children) {
             if (i.classList.contains("point")) {
-                if (i.getAttribute("hit_radius") === r) {
+
+                if (i.getAttribute("hit_radius") == r) {
                     i.setAttribute("visibility", "visible");
                 }
                 else {
