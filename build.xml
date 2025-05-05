@@ -107,6 +107,26 @@
         <echo message="------ DELETE LIBS SUCCESS ------" />
     </target>
 
+    <target name="jar" unless="${package.war}">
+        <jar destfile="${build.dir}/${artifactid}.jar">
+            <fileset dir="${build.dir}/${artifactid}"/>
+            <manifest>
+                <attribute name="Created-By" value="Apache Ant"/>
+                <attribute name="Manifest-Version" value="1.0"/>
+            </manifest>
+        </jar>
+    </target>
+
+    <target name="war" if="${package.war}">
+        <war destfile="${build.dir}/${artifactid}.war" webxml="${build.dir}/${artifactid}/WEB-INF/web.xml">
+            <fileset dir="${build.dir}/${artifactid}"/>
+            <manifest>
+                <attribute name="Created-By" value="Apache Ant"/>
+                <attribute name="Manifest-Version" value="1.0"/>
+            </manifest>
+        </war>
+    </target>
+
     <target name="build" depends="test" description="Build project">
         <echo message="------ BUILD ------"/>
 
@@ -124,21 +144,15 @@
             <fileset dir="${build.classes}"/>
         </copy>
 
-        <jar destfile="${build.dir}/${artifactid}.jar">
-            <fileset dir="${build.dir}/${artifactid}"/>
-            <manifest>
-                <attribute name="Created-By" value="Apache Ant"/>
-                <attribute name="Manifest-Version" value="1.0"/>
-            </manifest>
-        </jar>
+        <condition property="package.war" value="true" else="false">
+            <and>
+                <isset property="packaging" />
+                <equals arg1="${packaging}" arg2="war" />
+            </and>
+        </condition>
 
-        <war destfile="${build.dir}/${artifactid}.war" webxml="${build.dir}/${artifactid}/WEB-INF/web.xml">
-            <fileset dir="${build.dir}/${artifactid}"/>
-            <manifest>
-                <attribute name="Created-By" value="Apache Ant"/>
-                <attribute name="Manifest-Version" value="1.0"/>
-            </manifest>
-        </war>
+        <antcall target="war" />
+        <antcall target="jar" />
 
         <echo message="------ BUILD SUCCESS ------"/>
     </target>
