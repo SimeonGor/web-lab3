@@ -1,30 +1,35 @@
 package com.simeon.lab3.services;
 
-import com.simeon.lab3.beans.SessionHistory;
 import com.simeon.lab3.dto.AreaCheckRequest;
 import com.simeon.lab3.dto.CheckResult;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@ExtendWith(MockitoExtension.class)
 class AreaCheckServiceImplTest {
+    @Mock
     History sessionHistory;
+    @Mock
     History dbHistory;
     AreaCheckServiceImpl areaCheckService;
 
     @BeforeEach
     void setUp() {
-        sessionHistory = new SessionHistory();
-        dbHistory = new SessionHistory();
-
         areaCheckService = new AreaCheckServiceImpl();
-        areaCheckService.setDatabaseHistory(sessionHistory);
-        areaCheckService.setSessionHistory(dbHistory);
+        areaCheckService.setSessionHistory(sessionHistory);
+        areaCheckService.setDatabaseHistory(dbHistory);
     }
+
 
     @Test
     void checkHandler() {
@@ -37,15 +42,22 @@ class AreaCheckServiceImplTest {
 
         areaCheckService.handle(request);
 
-        assertEquals(expectedResult.getX(), sessionHistory.getResultList().get(0).getX());
-        assertEquals(expectedResult.getY(), sessionHistory.getResultList().get(0).getY());
-        assertEquals(expectedResult.getR(), sessionHistory.getResultList().get(0).getR());
-        assertEquals(expectedResult.isHit(), sessionHistory.getResultList().get(0).isHit());
+        ArgumentCaptor<CheckResult> captor = ArgumentCaptor.forClass(CheckResult.class);
+        Mockito.verify(sessionHistory).addResult(captor.capture());
 
-        assertEquals(expectedResult.getX(), dbHistory.getResultList().get(0).getX());
-        assertEquals(expectedResult.getY(), dbHistory.getResultList().get(0).getY());
-        assertEquals(expectedResult.getR(), dbHistory.getResultList().get(0).getR());
-        assertEquals(expectedResult.isHit(), dbHistory.getResultList().get(0).isHit());
+        CheckResult capturedResult = captor.getValue();
+        assertEquals(request.x(), capturedResult.getX());
+        assertEquals(request.y(), capturedResult.getY());
+        assertEquals(request.r(), capturedResult.getR());
+        assertEquals(expectedResult.isHit(), capturedResult.isHit());
+
+        Mockito.verify(dbHistory).addResult(captor.capture()); // Захватываем аргумент
+
+        capturedResult = captor.getValue();
+        assertEquals(request.x(), capturedResult.getX());
+        assertEquals(request.y(), capturedResult.getY());
+        assertEquals(request.r(), capturedResult.getR());
+        assertEquals(expectedResult.isHit(), capturedResult.isHit());
     }
 
 }
